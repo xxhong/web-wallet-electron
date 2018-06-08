@@ -3,8 +3,8 @@
 
 ## How to use
 
--npm install
--npm start
+- npm install
+- npm start
 
 
 ### Feature list
