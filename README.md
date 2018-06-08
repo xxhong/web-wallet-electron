@@ -6,7 +6,7 @@
 - npm install
 - npm start
 
-###Packaging tools
+### Packaging tools
 - [electron-packager](https://github.com/electron-userland/electron-packager)
 - [electron-builder](https://github.com/electron-userland/electron-builder)
 ### Feature list
