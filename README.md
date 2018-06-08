@@ -9,6 +9,9 @@
 ### Packaging tools
 - [electron-packager](https://github.com/electron-userland/electron-packager)
 - [electron-builder](https://github.com/electron-userland/electron-builder)
+
+### The installation package
+-   [Macox and Windows](https://github.com/xxhong/web-wallet-electron/releases)
 ### Feature list
 
 - generate nebulas address/keystore;
