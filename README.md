@@ -1,9 +1,11 @@
 
-# web-wallet
+# cross-platform web-wallet
 
-Nebulas wallet for the web. Nebulas users can use it to send transactions and submit smart contracts.
+## How to use
 
-Nebulas already has a JavaScript library [neb.js](https://github.com/nebulasio/neb.js) that implements address generation, transaction signing, and submission. Web-wallet implemented using this library.
+-npm install
+-npm start
+
 
 ### Feature list
 
