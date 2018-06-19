@@ -6,6 +6,17 @@ const {app, BrowserWindow,Menu} = require('electron')
 let mainWindow
 
 function createWindow () {
+
+    require('electron-context-menu')({
+        prepend: (params, browserWindow) => [{
+            label: '',
+            // Only show it when right-clicking images
+            visible: params.mediaType === 'image'
+        }]
+    });
+
+
+
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1280, height: 800, webPreferences: {
           nodeIntegration: false

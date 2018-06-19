@@ -19,5 +19,8 @@
   "devDependencies": {
     "electron": "^2.0.0",
     "electron-packager": "^12.1.0"
+  },
+  "dependencies": {
+    "electron-context-menu": "^0.9.1"
   }
 }
