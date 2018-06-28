@@ -7,7 +7,7 @@
   "scripts": {
     "start": "electron ."
   },
-  "repository": "",
+  "repository": "www.github.com",
   "keywords": [
     "Electron",
     "quick",
@@ -17,10 +17,10 @@
   ],
   "license": "CC0-1.0",
   "devDependencies": {
+    "electron-context-menu": "^0.9.1",
     "electron": "^2.0.0",
-    "electron-packager": "^12.1.0"
-  },
-  "dependencies": {
-    "electron-context-menu": "^0.9.1"
+    "electron-json-storage": "^4.1.0"
+
   }
+
 }

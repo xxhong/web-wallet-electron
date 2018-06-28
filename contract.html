@@ -370,7 +370,13 @@
     </div>
 
     <div class=footer></div>
-
+    <script>
+        //electron
+        window.nodeRequire = require;
+        delete window.require;
+        delete window.exports; delete window.module;
+    </script>
+    <script src="renderer.js"></script>
     <script src=lib/jquery-3.3.1.min.js></script>
     <script src=lib/bootstrap-4.0.0-dist/js/bootstrap.bundle.min.js data-depends=jquery.slim></script>
     <script src=lib/bootbox.min.js data-depends="bootstrap jquery.slim"></script>
@@ -386,7 +392,6 @@
     <script src=lib/codemirror/javascript.js></script>
     <script>
         "use strict";
-
         var nebulas = require("nebulas"),
             Account = nebulas.Account,
             Utils = nebulas.Utils,

@@ -23,8 +23,8 @@ var uiBlock = function () {
         if (s == "show")
             this.removeClass("marked-for-close");
         else if (s == "hide")
-            // when modal is animating, you can not close it, it's important to set this flag;
-            // when animating is over, you can close modal, this flag is not used
+        // when modal is animating, you can not close it, it's important to set this flag;
+        // when animating is over, you can close modal, this flag is not used
             this.addClass("marked-for-close");
 
         old$fnModal.apply(this, arguments);
@@ -142,14 +142,14 @@ var uiBlock = function () {
             // apiPrefix
 
             apiList = [
-                { chainId: 1, name: "Mainnet", url: "https://mainnet.nebulas.io" },
-                { chainId: 1001, name: "Testnet", url: "https://testnet.nebulas.io" },
-                { chainId: 100, name: "Local Nodes", url: "http://127.0.0.1:8685"}
+                {chainId: 1, name: "Mainnet", url: "https://mainnet.nebulas.io"},
+                {chainId: 1001, name: "Testnet", url: "https://testnet.nebulas.io"},
+                {chainId: 100, name: "Local Nodes", url: "http://127.0.0.1:8685"}
             ];
             apiPrefix = (localSave.getItem("apiPrefix") || "").toLowerCase();
             sApiButtons = "";
 
-            for (i = 0, len = apiList.length; i < len && apiList[i].url != apiPrefix; ++i);
+            for (i = 0, len = apiList.length; i < len && apiList[i].url != apiPrefix; ++i) ;
 
             i == len && (i = 0);
             localSave.setItem("apiPrefix", apiPrefix = apiList[i].url);
@@ -167,7 +167,7 @@ var uiBlock = function () {
             lang = (localSave.getItem("lang") || "").toLowerCase();
             sLangButtons = "";
 
-            for (i = 0, len = langList.length; i < len && langList[i] != lang; ++i);
+            for (i = 0, len = langList.length; i < len && langList[i] != lang; ++i) ;
 
             i == len && (i = 0);
             localSave.setItem("lang", lang = langList[i]);
@@ -179,25 +179,25 @@ var uiBlock = function () {
             // $.html
 
             i18n.run($(selector)
-                .addClass("container logo-main")
-                .html(
-                    "<div class=row>" +
-                    "    <div class=col></div>" +
-                    "    <div class=col>" +
-                    "        <div class=dropdown>" +
-                    '            <button class="btn dropdown-toggle" id=logo-main-dropdown-1 data-toggle=dropdown aria-haspopup=true aria-expanded=false>' + sApiText + "</button>" +
-                    '            <div class="dropdown-menu api" aria-labelledby=logo-main-dropdown-1>' + sApiButtons +
-                    "            </div>" +
-                    "        </div>" +
-                    "        <div class=dropdown>" +
-                    '            <button class="btn dropdown-toggle" id=logo-main-dropdown-2 data-toggle=dropdown aria-haspopup=true aria-expanded=false data-i18n=name></button>' +
-                    '            <div class="dropdown-menu lang" aria-labelledby=logo-main-dropdown-2>' + sLangButtons +
-                    "            </div>" +
-                    "        </div>" +
-                    "    </div>" +
-                    "</div>")
-                .on("click", ".api > button", onClickMenuApi)
-                .on("click", ".lang > button", onClickMenuLang),
+                    .addClass("container logo-main")
+                    .html(
+                        "<div class=row>" +
+                        "    <div class=col></div>" +
+                        "    <div class=col>" +
+                        "        <div class=dropdown>" +
+                        '            <button class="btn dropdown-toggle" id=logo-main-dropdown-1 data-toggle=dropdown aria-haspopup=true aria-expanded=false>' + sApiText + "</button>" +
+                        '            <div class="dropdown-menu api" aria-labelledby=logo-main-dropdown-1>' + sApiButtons +
+                        "            </div>" +
+                        "        </div>" +
+                        "        <div class=dropdown>" +
+                        '            <button class="btn dropdown-toggle" id=logo-main-dropdown-2 data-toggle=dropdown aria-haspopup=true aria-expanded=false data-i18n=name></button>' +
+                        '            <div class="dropdown-menu lang" aria-labelledby=logo-main-dropdown-2>' + sLangButtons +
+                        "            </div>" +
+                        "        </div>" +
+                        "    </div>" +
+                        "</div>")
+                    .on("click", ".api > button", onClickMenuApi)
+                    .on("click", ".lang > button", onClickMenuLang),
                 lang);
 
             function onClickMenuApi() {
@@ -257,6 +257,7 @@ var uiBlock = function () {
         // this block should not add 'container' class by it self, should let user add it
         function selectWalletFile(selector, callback) {
             var mAccount, mFileJson;
+            var cookieFileName,cookieFileResult,cookiepassword;
 
             i18n.run($(selector)
                 .addClass("select-wallet-file")
@@ -264,8 +265,8 @@ var uiBlock = function () {
                     "<p data-i18n=swf/name></p>" +
                     '<label class="file empty"><span data-i18n=swf/button></span><input type=file></label>' +
                     '<label class="hide pass"><span data-i18n=swf/good></span><input type=password></label>' +
-                    '<button class="btn btn-block" data-i18n=swf/unlock></button>' 
-                    )
+                    '<button class="btn btn-block" data-i18n=swf/unlock></button>'
+                )
                 .on("click", "button", onClickUnlock)
                 .on("keyup", "input[type=password]", onKeyUpPassword)
                 .on({
@@ -273,23 +274,43 @@ var uiBlock = function () {
                     click: onClickFile
                 }, "input[type=file]"));
 
+            //electron
+            getAllData(function (filejson,account,password) {
+                if(filejson!=null&&account&&password){
+                    mFileJson = filejson;
+                    mAccount = Account.fromAddress(mFileJson.address)
+                    cookieFileName=account
+                    cookiepassword = password;
+                    console.log('pwd '+password)
+                    $(".select-wallet-file").closest(".select-wallet-file").find("label.pass").removeClass("hide");
+                    $(".select-wallet-file").closest(".select-wallet-file").find("label.file").removeClass("empty");
+                    $("<span>" + cookieFileName + "</span>").replaceAll($(".select-wallet-file").closest(".select-wallet-file").find("label.file > span"));
+                    $(".select-wallet-file").closest(".select-wallet-file").find("input[type=password]").val(cookiepassword);
+                }
+            })
+
             function onChangeFile(e) {
                 // read address from json file content, not it's file name
                 var $this = $(this),
                     file = e.target.files[0],
-                    fr = new FileReader();
 
+                    fr = new FileReader();
                 // https://stackoverflow.com/questions/857618/javascript-how-to-extract-filename-from-a-file-input-control
                 // this.value.split(/[\\|/]/).pop()
                 $("<span>" + file.name + "</span>").replaceAll($this.closest(".select-wallet-file").find("label.file > span"));
                 fr.onload = onload;
                 fr.readAsText(file);
 
+                cookieFileName = file.name
                 // open file, parse json string, create account from address, then it's a success
                 function onload(e) {
                     try {
                         mFileJson = JSON.parse(e.target.result);
                         mAccount = Account.fromAddress(mFileJson.address)
+                        cookieFileResult = e.target.result;
+
+
+
                         $this.closest(".select-wallet-file").find("label.pass").removeClass("hide");
                         $this.closest(".select-wallet-file").find("label.file").removeClass("empty");
                     } catch (e) {
@@ -305,6 +326,7 @@ var uiBlock = function () {
                 }
             }
 
+
             function onClickFile() {
                 // clear file input
                 // https://stackoverflow.com/questions/12030686/html-input-file-selection-event-not-firing-upon-selecting-the-same-file
@@ -317,10 +339,15 @@ var uiBlock = function () {
 
             function onClickUnlock() {
                 var $swf = $(this).closest(".select-wallet-file");
+                var password =  $swf.find("input[type=password]").val();
 
+                setFileJson(mFileJson)
+                setAccount(cookieFileName)
+                setPassword(password)
+                console.log("password<<"+password)
                 if (mFileJson)
                     if (typeof callback == "function")
-                        callback($swf[0], mFileJson, mAccount, $swf.find("input[type=password]").val());
+                        callback($swf[0], mFileJson, mAccount, password);
                     else
                         console.log("uiBlock/selectWalletFile - 'callback' parameter not specified, cannot pass result");
                 else {
@@ -383,10 +410,10 @@ var uiBlock = function () {
             unit == "nas" && (unit = "NAS");
         }
 
-        for (i = 0; i < len && n >= 1000; ++i, n /= 1000);
+        for (i = 0; i < len && n >= 1000; ++i, n /= 1000) ;
 
         if (i == len && unit == "Wei")
-            for (i = 0, len = si.length - 1, unit = "NAS"; i < len && n >= 1000; ++i, n /= 1000);
+            for (i = 0, len = si.length - 1, unit = "NAS"; i < len && n >= 1000; ++i, n /= 1000) ;
 
         n = n.toFixed();
         return (i == len ? numberAddComma(n) : n) + " " + si[i] + unit;
@@ -398,11 +425,21 @@ var uiBlock = function () {
 
         var nebulas = require("nebulas"),
             mRules = {
-                eqgt0: function (s) { return s > -1; },
-                gt0: function (s) { return s > 0; },
-                lengthEq35: function (s) { return s.length == 35; },
-                lengthEq64: function (s) { return s.length == 64; },
-                lengthGt8: function (s) { return s.length > 8; },
+                eqgt0: function (s) {
+                    return s > -1;
+                },
+                gt0: function (s) {
+                    return s > 0;
+                },
+                lengthEq35: function (s) {
+                    return s.length == 35;
+                },
+                lengthEq64: function (s) {
+                    return s.length == 64;
+                },
+                lengthGt8: function (s) {
+                    return s.length > 8;
+                },
                 number: function (s) {
                     try {
                         nebulas.Utils.toBigNumber(s);
@@ -411,7 +448,9 @@ var uiBlock = function () {
                         return false;
                     }
                 },
-                required: function (s) { return s.length != 0; }
+                required: function (s) {
+                    return s.length != 0;
+                }
             };
 
         selector || (selector = "body");
@@ -460,7 +499,9 @@ var uiBlock = function () {
 
                                 $o.popover({
                                     container: "body",
-                                    content: function () { return i18n.run($("<div><span data-i18n=validate/" + $(this).data("index") + "></span></div>")).html(); },
+                                    content: function () {
+                                        return i18n.run($("<div><span data-i18n=validate/" + $(this).data("index") + "></span></div>")).html();
+                                    },
                                     html: true,
                                     placement: "auto",
                                     trigger: "manual"
@@ -469,7 +510,7 @@ var uiBlock = function () {
 
                                 setTimeout(function () {
                                     // unlike parameterless scrollIntoView() call, this call has no visual effect if called synchronously, don't know why
-                                    isOnScreen(o) || o.scrollIntoView({ behavior: "smooth" });
+                                    isOnScreen(o) || o.scrollIntoView({behavior: "smooth"});
                                 });
                             }
                             break;

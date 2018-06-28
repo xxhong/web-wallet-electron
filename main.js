@@ -1,33 +1,40 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow,Menu} = require('electron')
+const electron = require('electron')
+const app = electron.app
+const BrowserWindow = electron.BrowserWindow
+const Menu = electron.Menu
+const os = require('os');
+const path = require('path')
+const url = require('url')
+const ipcMain = electron.ipcMain
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
 function createWindow () {
-
     require('electron-context-menu')({
         prepend: (params, browserWindow) => [{
             label: '',
-            // Only show it when right-clicking images
             visible: params.mediaType === 'image'
         }]
     });
 
-
-
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1280, height: 800, webPreferences: {
-          nodeIntegration: false
+          nodeIntegration: true,
+          show: false
       }})
 
+
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'index.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
-    mainWindow.load
-  // mainWindow.loadURL("http://localhost:63342/web-wallet-master/index.html?_ijt=tf628hg95q5g2304kq3n9fkemt")
+  // mainWindow.loadFile('test.html')
+  //   mainWindow.loadFile('index.html')
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -56,8 +63,18 @@ function createWindow () {
         ]}
     ];
 
-    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-
+    // const storage = require('electron-json-storage');
+    // const dataPath = storage.getDataPath();
+    // console.log("目录："+dataPath);
+    //
+    // // storage.set('xxhong', { name: 'xxhong' ,age:28}, function(error) {
+    // //   if (error) throw error;
+    // // });
+    // storage.get('xxhong', function(error, data) {
+    //   if (error) throw error;
+    //
+    //   console.log(data);
+    // });
 }
 
 // This method will be called when Electron has finished
@@ -81,6 +98,7 @@ app.on('activate', function () {
     createWindow()
   }
 })
+
 
 
 
