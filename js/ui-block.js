@@ -202,7 +202,6 @@ var uiBlock = function () {
 
             function onClickMenuApi() {
                 var $this = $(this);
-
                 if (!$this.hasClass("active")) {
                     localSave.setItem("apiPrefix", apiList[$this.data("i")].url);
                     location.reload();
@@ -281,7 +280,7 @@ var uiBlock = function () {
                     mAccount = Account.fromAddress(mFileJson.address)
                     cookieFileName=account
                     cookiepassword = password;
-                    console.log('pwd '+password)
+                    // console.log('pwd '+password)
                     $(".select-wallet-file").closest(".select-wallet-file").find("label.pass").removeClass("hide");
                     $(".select-wallet-file").closest(".select-wallet-file").find("label.file").removeClass("empty");
                     $("<span>" + cookieFileName + "</span>").replaceAll($(".select-wallet-file").closest(".select-wallet-file").find("label.file > span"));
